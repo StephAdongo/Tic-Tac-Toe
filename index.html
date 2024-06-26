@@ -1,25 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tic-Tac-Toe</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <script defer src="script.js"></script>
+  <title>Odin Tic Tac Toe</title>
 </head>
+
 <body>
-    <h1>Tic-Tac-Toe</h1>
 
-    <div id="player-names">
-        <p>Player 1: <input type="text" id="player1-name" placeholder="Enter Name"></p>
-        <p>Player 2: <input type="text" id="player2-name" placeholder="Enter Name"></p>
-    </div>
+  <dialog>
+    <form method="dialog">
+      <p>Enter player details</p>
+      <div>
+        <label for="player1-name-input">Player 1 name:</label>
+        <input type="text" name="player1-name" id="player1-name-input" pattern="^[A-Za-z0-9]+$" placeholder="e.g. Eric"
+          required>
+      </div>
+      <div>
+        <label for="player1-symbol-input">Player 1 symbol:</label>
+        <input type="text" name="player1-symbol" id="player1-symbol-input" pattern="^[\x00-\x7F]$" placeholder="e.g. X"
+          required>
+      </div>
+      <div>
+        <label for="player2-name-input">Player 2 name:</label>
+        <input type="text" name="player2-name" id="player2-name-input" pattern="^[A-Za-z0-9]+$" placeholder="e.g. Anna"
+          required>
+      </div>
+      <div>
+        <label for="player2-symbol-input">Player 2 symbol:</label>
+        <input type="text" name="player2-symbol" id="player2-symbol-input" pattern="^[\x00-\x7F]$" placeholder="e.g. O"
+          required>
+      </div>
+      <button type="submit">Start</button>
+    </form>
+  </dialog>
 
-    <div id="gameboard"></div>
+  <h1>Odin Tic Tac Toe</h1>
 
-    <button id="start-button">Start Game</button>
+  <p id="message-output">waiting...</p>
+  <div id="board-container">
+    <button value="0" data-type="square-button"></button>
+    <button value="1" data-type="square-button"></button>
+    <button value="2" data-type="square-button"></button>
+    <button value="3" data-type="square-button"></button>
+    <button value="4" data-type="square-button"></button>
+    <button value="5" data-type="square-button"></button>
+    <button value="6" data-type="square-button"></button>
+    <button value="7" data-type="square-button"></button>
+    <button value="8" data-type="square-button"></button>
+  </div>
+  <button id="restart-button" hidden>Play again?</button>
 
-    <div id="result"></div>
-
-    <script src="script.js"></script>
 </body>
+
 </html>

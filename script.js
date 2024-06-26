@@ -1,152 +1,171 @@
+// create game
+const game = ticTacToe();
 
-let playerCount = 0;
-let playerTurn = 0;
-let players = [];
-let gameBoard;
-const BLANK_CHAR = "_";
-const mainDiv = document.querySelector("#main");
-const resultTextArea = document.querySelector("#result");
-const startButton = document.querySelector("#start-button");
-const tttBoard = document.querySelector("#ttt-board");
-startButton.textContent = "Start Game!";
-startButton.addEventListener("click", () => {
-  startButton.style.visibility = "hidden";
-  tttBoard.style.visibility = "visible";
-  playGame();
+// make board
+let board = game.createBoard();
+
+// create turn manager
+const turns = game.manageTurns();
+
+// make players
+let roster = game.managePlayers();
+document.querySelector("dialog").showModal();
+document.querySelector("form").addEventListener("submit", (e) => {
+  e.preventDefault();
+  const player1Name = e.target["player1-name"].value;
+  const player1Symbol = e.target["player1-symbol"].value;
+  const player2Name = e.target["player2-name"].value;
+  const player2Symbol = e.target["player2-symbol"].value;
+  if (player1Name != player2Name && player1Symbol != player2Symbol) {
+    roster.createPlayers(
+      player1Name,
+      player1Symbol,
+      player2Name,
+      player2Symbol
+    );
+    // display first turn
+    turns.displayTurn(roster.getPlayers(0));
+    document.querySelector("dialog").close();
+  } else alert("Player names and symbols must be unique.");
 });
 
-
-function createBlankBoard() {
-  const arr = [];
-  for (let i = 0; i < 9; i++) {
-    arr.push(BLANK_CHAR);
-  }
-  return arr;
-}
-
-function displayGameBoard() {
-  for (let i = 0; i < 8; i += 3) {
-    console.log(
-      gameBoard[i] + "  " + gameBoard[i + 1] + "  " + gameBoard[i + 2]
-    );
-  }
-}
-
-function createButtons() {
-  for (let i = 0; i < 9; i++) {
-    const btn = document.createElement("button");
-    btn.id = "button-" + (i + 1);
-    tttBoard.append(btn);
-  }
-}
-
-const createPlayer = (name) => {
-  const playerName = name;
-  const playerSign = playerCount == 0 ? "X" : "O";
-  playerCount++;
-  return { playerName, playerSign };
-};
-
-function askForPlayerDetails() {
-  for (let i = 0; i < 2; i++) {
-    const playerName = prompt(`Enter Player ${i + 1}'s Name : `);
-    players.push(createPlayer(playerName));
-  }
-}
-
-function findWinner() {
-  if (
-    //checks for horizontal match
-    (gameBoard[0] == gameBoard[1] &&
-      gameBoard[1] == gameBoard[2] &&
-      gameBoard[0] != BLANK_CHAR) ||
-    (gameBoard[3] == gameBoard[4] &&
-      gameBoard[4] == gameBoard[5] &&
-      gameBoard[3] != BLANK_CHAR) ||
-    (gameBoard[6] == gameBoard[7] &&
-      gameBoard[7] == gameBoard[8] &&
-      gameBoard[6] != BLANK_CHAR) ||
-    //checks for vertical match
-    (gameBoard[0] == gameBoard[3] &&
-      gameBoard[3] == gameBoard[6] &&
-      gameBoard[0] != BLANK_CHAR) ||
-    (gameBoard[1] == gameBoard[4] &&
-      gameBoard[4] == gameBoard[7] &&
-      gameBoard[1] != BLANK_CHAR) ||
-    (gameBoard[2] == gameBoard[5] &&
-      gameBoard[5] == gameBoard[8] &&
-      gameBoard[2] != BLANK_CHAR) ||
-    //checks for diagonal match
-    (gameBoard[0] == gameBoard[4] &&
-      gameBoard[4] == gameBoard[8] &&
-      gameBoard[0] != BLANK_CHAR) ||
-    (gameBoard[6] == gameBoard[4] &&
-      gameBoard[4] == gameBoard[2] &&
-      gameBoard[6] != BLANK_CHAR)
-  ) {
-    if (playerTurn == 1) {
-      return 1;
-    } else {
-      return 2;
-    }
-  } else {
-    if (!gameBoard.includes(BLANK_CHAR)) {
-      return 0;
-    }
-  }
-}
-
-function changePlayerTurn() {
-  playerTurn = (playerTurn + 1) % 2;
-}
-
-function disableAllButtons() {
-  let btnArray = tttBoard.getElementsByTagName("button");
-  [...btnArray].forEach((element) => {
-    element.disabled = true;
-  });
-}
-
-function playGame() {
-  resetEverything();
-  gameBoard = createBlankBoard();
-  createButtons();
-  askForPlayerDetails();
-
-  tttBoard.addEventListener("click", (event) => {
-    if (event.target.nodeName === "BUTTON") {
-      if (event.target.textContent == "X" || event.target.textContent == "O") {
-        console.log("Position already marked with " + event.target.textContent);
+document.querySelector("#board-container").addEventListener("click", (e) => {
+  if (e.target.tagName === "BUTTON") {
+    const squareNumber = e.target.value;
+    const squares = board.getSquares();
+    if (!squares[squareNumber]) {
+      const turn = turns.getTurn();
+      const currentPlayer = roster.getPlayers(turn);
+      board.setSquare(squareNumber, currentPlayer, e.target);
+      if (game.checkBoard(board.getSquares()) === "winner") {
+        game.declareWinner(currentPlayer);
+      } else if (game.checkBoard(board.getSquares()) === "tie") {
+        game.declareTie();
       } else {
-        let clickedBtnIndex = String(event.target.id);
-        clickedBtnIndex = clickedBtnIndex.charAt(clickedBtnIndex.length - 1);
-        gameBoard[clickedBtnIndex - 1] = players[playerTurn].playerSign;
-        event.target.textContent = players[playerTurn].playerSign;
-        changePlayerTurn();
-
-        const winner = findWinner();
-        if (winner == "1" || winner == "2") {
-          resultTextArea.textContent = `${
-            players[winner - 1].playerName
-          } wins.`;
-          disableAllButtons();
-          startButton.style.visibility = "visible";
-        } else if (winner == "0") {
-          resultTextArea.textContent = "It's a draw!";
-          startButton.style.visibility = "visible";
-        }
+        const nextPlayer = roster.getPlayers(turns.switchTurn());
+        turns.displayTurn(nextPlayer);
       }
-
-      displayGameBoard();
     }
-  });
-}
+  }
+});
 
-function resetEverything() {
-  players = [];
-  playerCount = 0;
-  playerTurn = 0;
-  gameBoard = null;
-  tttBoard.innerHTML = "";
-  resultTextArea.textContent = "";
-}                 
+document.querySelector("#restart-button").addEventListener("click", (e) => {
+  // reset board
+  board = game.createBoard();
+  const buttons = document.querySelectorAll("[data-type='square-button']");
+  for (const b of buttons) {
+    b.disabled = false;
+    b.textContent = "";
+  }
+  // reset players
+  roster = game.managePlayers();
+  // clear and show modal
+  document.querySelector("form").reset();
+  document.querySelector("dialog").showModal();
+  e.target.hidden = true;
+});
+//
+
+function ticTacToe() {
+  const manageTurns = () => {
+    let turn = 0;
+    const getTurn = () => {
+      return turn;
+    };
+    const switchTurn = () => {
+      turn === 0 ? (turn = 1) : (turn = 0);
+      return turn;
+    };
+    const displayTurn = (player) => {
+      document.querySelector(
+        "#message-output"
+      ).textContent = `${player.name}'s turn: ${player.symbol}`;
+    };
+    return { getTurn, switchTurn, displayTurn };
+  };
+
+  const managePlayers = () => {
+    const players = [];
+
+    const createPlayers = (p1n, p1s, p2n, p2s) => {
+      players[0] = {
+        name: p1n,
+        symbol: p1s
+      };
+      players[1] = {
+        name: p2n,
+        symbol: p2s
+      };
+    };
+
+    const getPlayers = (turn) => {
+      if (turn != null) return players[turn];
+      else return players;
+    };
+
+    return { createPlayers, getPlayers };
+  };
+
+  const createBoard = () => {
+    const squares = [null, null, null, null, null, null, null, null, null];
+    const getSquares = () => squares;
+    const setSquare = (i, p, b) => {
+      squares[i] = p.symbol;
+      b.textContent = p.symbol;
+    };
+    return { getSquares, setSquare };
+  };
+
+  const checkBoard = (squares) => {
+    const combos = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      [0, 4, 8],
+      [2, 4, 6]
+    ];
+    for (const c of combos) {
+      const [x, y, z] = c;
+      if (
+        squares[x] &&
+        squares[x] === squares[y] &&
+        squares[x] === squares[z]
+      ) {
+        return "winner";
+      }
+    }
+    if (squares.every((square) => square !== null)) return "tie";
+  };
+
+  const declareWinner = (player) => {
+    const buttons = document.querySelectorAll("[data-type='square-button']");
+    for (const b of buttons) {
+      b.disabled = true;
+    }
+    document.querySelector(
+      "#message-output"
+    ).textContent = `${player.name} wins!`;
+    document.querySelector("#restart-button").hidden = false;
+  };
+
+  const declareTie = () => {
+    const buttons = document.querySelectorAll("[data-type='square-button']");
+    for (const b of buttons) {
+      b.disabled = true;
+    }
+    document.querySelector("#message-output").textContent = "Tie game!";
+    document.querySelector("#restart-button").hidden = false;
+  };
+
+  return {
+    manageTurns,
+    managePlayers,
+    createBoard,
+    checkBoard,
+    declareWinner,
+    declareTie
+  };
+}
