@@ -169,14 +169,3 @@ function ticTacToe() {
     declareTie
   };
 }
-<<<<<<< HEAD
-=======
-
-class Player {
-    constructor (name, symbol) {
-        this.name = name;
-        this.symbol = symbol;
-    }
-    
-}
->>>>>>> 855a22aa6ec9f58db7433c86c64e56d6ffa88b78
