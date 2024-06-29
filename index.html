@@ -1,47 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="style.css">
-    <title>Tic Tac Toe game</title>
-  </head>
-    <body>
-      <dialog>
-        <form method="dialog">
-          <p>Enter player details</p>
-          <div>
-            <label for="player-1-name-input">Player 1 name:</label>
-            <input type="text" name="player-1-name" id="player-1-name-input" placeholder="e.g Adongo" required>
-          </div>
-          <div>
-            <label for ="player-1-symbol-input">Player 1 symbol</label>
-            <input type="text" name="player-1-symbol" id="player-1-symbol-input" placeholder="e.g X" required>
-          </div>
-          <div>
-            <label for="player-2-name-input">Player 2 name:</label>
-            <input type="text" name="player-2-name" id="player-2-name-input" placeholder="e.g Steph" required>
-          </div>
-          <div>
-            <label for="player-2-symbol-input">Player 2 symbol:</label>
-            <input type="text" name="player-2-symbol" id="player-2-symbol-input" placeholder="e.g O" required>
-          </div>
-          <button type = "submit">Start</button>
-        </form>
-      </dialog>
-      <h1>Tic Tac Toe game</h1>
-      <p id="message-output">waiting...</p>
-      <div id="board-container">
-        <button value="0" data-type="square-button"></button>
-        <button value="1" data-type="square-button"></button>
-        <button value="2" data-type="square-button"></button>
-        <button value="3" data-type="square-button"></button>
-        <button value="4" data-type="square-button"></button>
-        <button value="5" data-type="square-button"></button>
-        <button value="6" data-type="square-button"></button>
-        <button value="7" data-type="square-button"></button>
-        <button value="8" data-type="square-button"></button>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <script defer src="script.js"></script>
+  <title>Odin Tic Tac Toe</title>
+</head>
+
+<body>
+
+  <dialog>
+    <form method="dialog">
+      <p>Enter player details</p>
+      <div>
+        <label for="player1-name-input">Player 1 name:</label>
+        <input type="text" name="player1-name" id="player1-name-input" placeholder="e.g. Steph"
+          required>
       </div>
-      <button id="restart-button" hidden>Play again?</button>
-      <script src="script.js"></script>
-    </body>
+      <div>
+        <label for="player1-symbol-input">Player 1 symbol:</label>
+        <input type="text" name="player1-symbol" id="player1-symbol-input"  placeholder="e.g. X"
+          required>
+      </div>
+      <div>
+        <label for="player2-name-input">Player 2 name:</label>
+        <input type="text" name="player2-name" id="player2-name-input"  placeholder="e.g. Adongo"
+          required>
+      </div>
+      <div>
+        <label for="player2-symbol-input">Player 2 symbol:</label>
+        <input type="text" name="player2-symbol" id="player2-symbol-input"  placeholder="e.g. O"
+          required>
+      </div>
+      <button type="submit">Start</button>
+    </form>
+  </dialog>
+
+  <h1>Odin Tic Tac Toe</h1>
+
+  <p id="message-output">waiting...</p>
+  <div id="board-container">
+    <button value="0" data-type="square-button"></button>
+    <button value="1" data-type="square-button"></button>
+    <button value="2" data-type="square-button"></button>
+    <button value="3" data-type="square-button"></button>
+    <button value="4" data-type="square-button"></button>
+    <button value="5" data-type="square-button"></button>
+    <button value="6" data-type="square-button"></button>
+    <button value="7" data-type="square-button"></button>
+    <button value="8" data-type="square-button"></button>
+  </div>
+  <button id="restart-button" hidden>Play again?</button>
+
+</body>
+
 </html>
