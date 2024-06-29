@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 :root {
   --dark: #181833;
   --light: #9797d7;
@@ -89,3 +90,7 @@ button:hover {
 button:disabled {
   opacity: 0.5;
 }
+=======
+body {
+}
+>>>>>>> 2a12b67fd360d0a0a6c246ac4d04a794a2201a02
