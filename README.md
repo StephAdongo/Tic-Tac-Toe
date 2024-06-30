@@ -1,3 +1,3 @@
 # Tic Tac Toe game
 
-This is a game that can be played in the browser.
+- This is a game that can be played in the browser.
