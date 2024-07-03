@@ -4,6 +4,6 @@
 
   ## Languages
 
+  - Javascript
   - Html
-  - CSS
-  - Javascript  
+  - CSS 
